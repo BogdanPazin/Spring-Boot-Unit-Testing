@@ -42,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class GradebookControllerTest {
     private static MockHttpServletRequest request;
 
-//    POMOCU OVE ANOTACIJE SE INJECT-UJE JPA ENTITY MANAGER, I ZBOG TOGA JE UVEDENA ANOTACIJA @Transactional
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -100,7 +99,6 @@ public class GradebookControllerTest {
     @Value("${sql.script.delete.history.grade}")
     private String sqlDeleteHistoryGrade;
 
-//    OVO SE KORISTI KADA SE VERIFIKUJE JSON RESPONSE
     public static final MediaType APPLICATION_JSON_UTF8 = MediaType.APPLICATION_JSON;
 
     @BeforeAll
@@ -130,11 +128,9 @@ public class GradebookControllerTest {
         entityManager.persist(student);
         entityManager.flush();
 
-//        OVAKO TESTIRAM REST CONTROLLER, PROVERAVAM STATUS, CONTENT TYPE I JSON BODY
         mockMvc.perform(MockMvcRequestBuilders.get("/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_UTF8))
-//                SA jsonPath SE ISPITUJE JSON BODY, GDE SA '$' PRISTUPAM KORENU JSON ARRAY-A
                 .andExpect(jsonPath("$", hasSize(2)));
     }
 
@@ -146,7 +142,6 @@ public class GradebookControllerTest {
 
         mockMvc.perform(post("/")
                 .contentType(MediaType.APPLICATION_JSON)
-//                OBJECT MAPPER GENERISE JSON STRING OD JAVA OBJEKTA
                 .content(objectMapper.writeValueAsString(student)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
@@ -174,8 +169,6 @@ public class GradebookControllerTest {
 
         mockMvc.perform(delete("/student/{id}", 0))
                 .andExpect(status().is4xxClientError())
-//                SADA CE REST API DA VRATI JSON ERROR MESSAGE, A NJOJ PRISTUPAM SA $.NESTO
-//                (SAM ERROR MESSAGE SE SASTOJI IZ status, message, timestamp)
                 .andExpect(jsonPath("$.status", is(404)))
                 .andExpect(jsonPath("$.message", is("Student or Grade was not found")));
     }
@@ -218,8 +211,6 @@ public class GradebookControllerTest {
                 .andExpect(jsonPath("$.firstname", is("Eric")))
                 .andExpect(jsonPath("$.lastname", is("Kripke")))
                 .andExpect(jsonPath("$.emailAddress", is("eric@test.com")))
-
-//                IMAO SAM JEDNU OCENU ZA OVU OSOBU, ALI U OVOM TESTU SAM DODAO DRUGU
                 .andExpect(jsonPath("$.studentGrades.mathGradeResults", hasSize(2)));
     }
 
