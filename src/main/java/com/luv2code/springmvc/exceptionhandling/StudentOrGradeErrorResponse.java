@@ -1,7 +1,5 @@
 package com.luv2code.springmvc.exceptionhandling;
 
-// OVA KLASA JE DATA TRANSFER OBJECT
-// ONA IDE UZ ResponseEntity<>, GDE JE SAM DTO BODY TOG RESPONSE-A
 public class StudentOrGradeErrorResponse {
 
     private int status;
