@@ -29,8 +29,6 @@ public class StudentGrades {
         int lengthOfGrades = grades.size();
         double sum = addGradeResultsForSingleClass(grades);
         double result = sum / lengthOfGrades;
-
-        // add a round function
         BigDecimal resultRound = BigDecimal.valueOf(result);
         resultRound = resultRound.setScale(2, RoundingMode.HALF_UP);
         return resultRound.doubleValue();
